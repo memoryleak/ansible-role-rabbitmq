@@ -1,1 +1,2 @@
 ---
+rabbitmq_service_name: rabbitmq-server

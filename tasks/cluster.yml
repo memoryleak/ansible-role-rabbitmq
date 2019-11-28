@@ -1,0 +1,25 @@
+---
+- name: Set RabbitMQ cluster_formation.peer_discovery_backend
+  lineinfile:
+    path: /etc/rabbitmq/rabbitmq.conf
+    regexp: "cluster_formation.peer_discovery_backend = (.*)"
+    line: "cluster_formation.peer_discovery_backend = rabbit_peer_discovery_aws"
+
+- name: Set RabbitMQ cluster_formation.aws.region
+  lineinfile:
+    path: /etc/rabbitmq/rabbitmq.conf
+    regexp: "cluster_formation.aws.region = (.*)"
+    line: "cluster_formation.aws.region = {{ rabbitmq_aws_region }}"
+
+- name: Set RabbitMQ cluster_formation.aws.use_autoscaling_group
+  lineinfile:
+    path: /etc/rabbitmq/rabbitmq.conf
+    regexp: "cluster_formation.aws.use_autoscaling_group = (.*)"
+    line: "cluster_formation.aws.use_autoscaling_group = true"
+
+- name: Setup rabbitmq_peer_discovery_aws plugin
+  rabbitmq_plugin:
+    names: rabbitmq_peer_discovery_aws
+    state: enabled
+  tags: ['rabbitmq']
+  notify: rabbitmq-restarted-handler
