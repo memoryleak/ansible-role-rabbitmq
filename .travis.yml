@@ -1,0 +1,29 @@
+---
+dist: bionic
+language: python
+python: 3.7
+services: docker
+
+env:
+  global:
+    - ROLE_NAME: rabbitmq
+  matrix:
+    - MOLECULE_DISTRO: centos7
+
+install:
+  # Install test dependencies.
+  - pip install -r requirements.txt
+
+before_script:
+  # Use actual Ansible Galaxy role name for the project directory.
+  - cd ../
+  - mv ansible-role-$ROLE_NAME memoryleak.$ROLE_NAME
+  - cd memoryleak.$ROLE_NAME
+
+script:
+  # Run tests.
+  - molecule test
+
+notifications:
+  # Update galaxy
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/

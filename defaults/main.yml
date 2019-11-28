@@ -1,0 +1,3 @@
+---
+# defaults file for memoryleak.rabbitmq
+rabbitq_server_version: "3.7.21"

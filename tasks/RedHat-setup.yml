@@ -1,0 +1,58 @@
+---
+- name: Add yum repository for rabbitmq_rabbitmq-server
+  yum_repository:
+    description: rabbitmq_rabbitmq-server
+    name: rabbitmq_rabbitmq-server
+    baseurl: https://packagecloud.io/rabbitmq/rabbitmq-server/el/$releasever/$basearch
+    repo_gpgcheck: true
+    gpgcheck: false
+    enabled: true
+    gpgkey: https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey
+    sslverify: true
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    metadata_expire: '300'
+
+- name: Add yum repository for rabbitmq_rabbitmq-server-source
+  yum_repository:
+    description: rabbitmq_rabbitmq-server-source
+    name: rabbitmq_rabbitmq-server-source
+    baseurl: https://packagecloud.io/rabbitmq/rabbitmq-server/el/$releasever/SRPMS
+    repo_gpgcheck: true
+    gpgcheck: false
+    enabled: true
+    gpgkey: https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey
+    sslverify: true
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    metadata_expire: '300'
+
+- name: Add yum repository for rabbitmq_erlang
+  yum_repository:
+    description: "rabbitmq_erlang"
+    name: rabbitmq_erlang
+    baseurl: https://packagecloud.io/rabbitmq/erlang/el/$releasever/$basearch
+    repo_gpgcheck: true
+    gpgcheck: false
+    enabled: true
+    gpgkey: https://packagecloud.io/rabbitmq/erlang/gpgkey
+    sslverify: true
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    metadata_expire: '300'
+
+- name: Add yum repository for rabbitmq_erlang-source
+  yum_repository:
+    description: rabbitmq_erlang-source
+    name: rabbitmq_erlang-source
+    baseurl: https://packagecloud.io/rabbitmq/erlang/el/$releasever/SRPMS
+    repo_gpgcheck: true
+    gpgcheck: false
+    enabled: true
+    gpgkey: https://packagecloud.io/rabbitmq/erlang/gpgkey
+    sslverify: true
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    metadata_expire: '300'
+
+- name: Install RabbitMQ
+  package:
+    name: "rabbitmq-server-{{ rabbitq_server_version }}-1.el{{ ansible_distribution_major_version }}"  # noqa 206
+    state: present
+    update_cache: true
