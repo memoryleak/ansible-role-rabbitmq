@@ -7,13 +7,24 @@
 - include_tasks: "{{ ansible_os_family }}-setup.yml"
   tags: ['include_tasks']
 
-- name: Setup plugins
+- name: Setup plugins on ansible >=2.10
+  rabbitmq_plugin:
+    names: "{{ item }}"
+    state: enabled
+    broker_state: offline
+  with_items: "{{ rabbitmq_plugins }}"
+  tags: ['rabbitmq']
+  notify: rabbitmq-restarted-handler
+  when: ansible_version.full is version('2.10', '>=')
+
+- name: Setup plugins on ansible <2.10
   rabbitmq_plugin:
     names: "{{ item }}"
     state: enabled
   with_items: "{{ rabbitmq_plugins }}"
   tags: ['rabbitmq']
   notify: rabbitmq-restarted-handler
+  when: ansible_version.full is version('2.10', '<')
 
 - name: force all notified handlers to run at this point, not waiting for normal sync points
   meta: flush_handlers
